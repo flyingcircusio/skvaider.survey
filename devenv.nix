@@ -14,6 +14,7 @@
 
   # https://devenv.sh/languages/
   languages.python.enable = true;
+  languages.python.uv.enable = true;
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
