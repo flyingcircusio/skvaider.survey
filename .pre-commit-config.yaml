@@ -1,0 +1,65 @@
+exclude: ^secrets/|^appenv$|^src/fc/directory/vendor|^src/fc/directory/admin/resources/css/bootstrap5.min.css|^src/fc/directory/admin/resources/js/bootstrap5.bundle.min.js
+repos:
+- hooks:
+  # Rule selection lives in pyproject.toml so editors and pre-commit agree.
+  - args:
+    - --fix
+    id: ruff-check
+  - id: ruff-format
+  repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.16.8 # keep in sync with pyproject.toml
+
+- repo: https://github.com/google/keep-sorted
+  rev: v0.10.0
+  hooks:
+    - id: keep-sorted
+- repo: https://github.com/astral-sh/uv-pre-commit
+  # uv version.
+  rev: 0.12.21
+  hooks:
+    - id: uv-lock
+      args:
+        - "--check"
+- repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
+  rev: 1.40.1
+  hooks:
+    - id: basedpyright
+      pass_filenames: false
+    - id: basedpyright
+      alias: basedpyright-baseline
+      name: basedpyright (write baseline)
+      args: ["--writebaseline"]
+      pass_filenames: false
+      stages: [manual]
+- hooks:
+  - additional_dependencies:
+    - prettier@3.3.3
+    entry: prettier --write --ignore-unknown
+    files: ^fcio-ui/
+    exclude: ^fcio-ui/openapi\.json$
+    id: prettier
+    language: node
+    name: prettier
+    require_serial: false
+    types:
+    - text
+  repo: local
+# built-in low level hooks last because basedpyright and others might create
+# changes that need to be checked/fixed, too.
+- hooks:
+  - id: detect-private-key
+  - id: check-added-large-files
+  - exclude: "(?x)^(\n  secrets/|environments/.*/secret.*|\n  .*\\.patch\n)$\n"
+    id: trailing-whitespace
+  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
+    id: end-of-file-fixer
+  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
+    id: check-yaml
+  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
+    id: check-json
+  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
+    id: check-xml
+  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
+    id: check-toml
+  repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v6.0.0

@@ -1,0 +1,69 @@
+[project]
+name = "skvaider.survey"
+version = "0.1dev0"
+
+description = "Tools for AI model providers and AI application developers to validate and verify inference and model quality and performance"
+license = "MIT"
+authors = [
+    { name = "Flying Circus IO GmbH <mail@flyingcircus.io>", email = "mail@flyingcircus.io" },
+]
+
+requires-python = "==3.14.*"
+dependencies = [
+    "pydantic>=2.13.5",
+    # keep-sorted start
+    # keep-sorted end
+    "pyramid>=2.1",
+]
+
+[dependency-groups]
+dev = [
+    # keep-sorted start
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cache",
+    "pytest-cov",
+    "pytest-localserver",
+    "pytest-rerunfailures",
+    "pytest-timeout",
+    "pytest-xdist",
+    "ruff==0.16.8",         # keep in sync with pre-commit
+    # keep-sorted end
+]
+
+[build-system]
+requires = ["uv_build>=0.9.22,<0.10"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "skvaider.survey"
+module-root = "src"
+
+[tool.uv]
+exclude-newer = "7 days"
+
+[project.scripts]
+# keep-sorted start
+arena = "skvaider.survey.arena:main"
+runner = "skvaider.survey.runner:main"
+# keep-sorted end
+
+[tool.ruff]
+line-length = 80
+
+[tool.scriv]
+format = "rst"
+fragment_directory = "CHANGES.d"
+output_file = "CHANGES.txt"
+version = "unreleased"
+entry_title_template = ""
+rst_header_chars = "-~"
+insert_marker = "- Nothing changed yet."
+categories = ""
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+venvPath = "."
+pythonVersion = "3.14"
+venv = ".venv"
+include = ["src"]
