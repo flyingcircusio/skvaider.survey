@@ -11,3 +11,9 @@ devenv.local.yaml
 
 # python
 __pycache__
+
+.coverage
+.DS_Store
+
+# local state
+var/

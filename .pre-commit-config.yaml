@@ -1,4 +1,11 @@
-exclude: ^secrets/|^appenv$|^src/fc/directory/vendor|^src/fc/directory/admin/resources/css/bootstrap5.min.css|^src/fc/directory/admin/resources/js/bootstrap5.bundle.min.js
+exclude: |
+  (?x)^(
+    src/skvaider/survey/static/(js|css)/bootstrap.*|
+    src/skvaider/survey/static/(js|css)/htmx.*|
+    src/skvaider/survey/static/(js|css)/_hyperscript.*|
+    .*\.patch|
+    uv.lock
+  )
 repos:
 - hooks:
   # Rule selection lives in pyproject.toml so editors and pre-commit agree.
@@ -49,17 +56,11 @@ repos:
 - hooks:
   - id: detect-private-key
   - id: check-added-large-files
-  - exclude: "(?x)^(\n  secrets/|environments/.*/secret.*|\n  .*\\.patch\n)$\n"
-    id: trailing-whitespace
-  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
-    id: end-of-file-fixer
-  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
-    id: check-yaml
-  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
-    id: check-json
-  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
-    id: check-xml
-  - exclude: "(?x)^(\n  environments/.*/secret.*|\n  .*\\.patch\n)$\n"
-    id: check-toml
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: check-yaml
+  - id: check-json
+  - id: check-xml
+  - id: check-toml
   repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v6.0.0

@@ -41,29 +41,28 @@ challenges that complement each other:
 	data inadvertently used for training or other purposes that may
 	undermine their business in the medium to long term.
 
-Looking at those two challenges, we want to add a suite of two new utilities
-to our AI platform, the new suite being called `skvaider.survey` with the
-`arena` and `runner` utilities.
+Looking at those two challenges, we want to add two new utilities
+to our AI platform: `skvaider.survey` and `skvaider.evaluate`.
 
-The `arena` is intended to be a server that provides a dashboard aggregating the provider
-perspective. The `runner` is intended to be installed easily by customers and allows
+`skvaider.survey` is intended to be a server that provides a dashboard aggregating the model inference provider perspective. `skvaider.evaluate` is intended to be installed easily by customers and allows running arbitrary
+code to evaluate an application against models.
 
-The `arena` server is shall be connected to runners to:
+The `skvaider.survey` server allow runners to connect to it, to
 
-* register known evaluations (runs) from the runners
-* trigger runs by providing temporary end
-* collect results from runs (triggered or sent freely)
+* register known evaluations (runs) from the evaluators
+* let the survey server trigger runs by providing temporary (exclusive) model access
+* collect results from runs (triggered or sent freely by the evaluators)
 * keep statistics about results from triggers about parameters as well as quality and speed of the results
 * provide public and private dashboards
 
-The `runner` shall be a daemon for developers, that:
+The `skvaider.evaluate` component shall be a daemon for developers, that:
 
 * is easy to install and configure
 * allows developers to register arbitrary code running their evaluations
-* connects to one or more arena servers
+* connects to one (or more) arena servers
 * provides a local dashboard of the known evaluations and the history of runs
 * allows manually triggering runs with known credentials
-* accepts triggers from the `arena` with temporary credentials
+* accepts triggers from `skvaider.survey` with temporary credentials
 
 # Challenges
 
@@ -118,29 +117,49 @@ matrix concept or warrant investigating an additional approach.
 Generally our stack uses:
 
 * modern Python (3.14+)
-* asyncio instead of threads for application code (webservers running threads are fine)
+* non-web, parallel tasks should be run using asyncio (webservers running threads are fine but should delegate to an async component for background tasks)
 * SQLAlchemy+Alembic (we'll start with sqlite and can move to PostgreSQL as needed)
 * Pydantic to parse models on IO boundaries into properly typed structures from toml or json
-* Pyramid as a webserver with bootstrap, HTMX, and Hyperscript for the UI.
+* Pyramid as a webserver with bootstrap, HTMX, and maybe Hyperscript for the UI.
 * Aramaki as a way to implement this as a federated system.
 
-## Skvaider
+## skvaider.proxy
 
-Our inference serving platform `skvaider` will need to grow two new abilities:
+Our current, existing inference serving platform `skvaider` will need to grow two new abilities:
 
 * accept a second aramaki connection to manage temporary credentials
 * allow to quiesce competing access so that evaluations can run without noisy neighbours
 * ability to track experiment metadata: number of requests, which endpoints, timings, errors, tokens, model, ...
 * revive llama-cpp integration for local models during development
 
-## Arena
+(See https://github.com/flyingcircusio/skvaider)
+
+## skvaider.survey
 
 * be an aramaki server that passes out information about temporary credentials and experiments to skvaider
 * a public dashboard that anonymizes the statistics and status
 * a private operations backend to manage runners, manage evaluations
 
-## Runner
+(This repo, see https://github.com/flyingcircusio/skvaider.survey)
+
+
+## skvaider.evaluate
 
 * Use a GitHub-Action-style approach, letting customers register a number of repositories that contain action definitions.
 * We likely want to build on top of something like Forgejo Actions.
 * interlink the local dashboard with the relevant public dashboard where applicable
+
+(Not yet bootstrapped, will live in https://github.com/flyingcircusio/skvaider.evaluate)
+
+
+# Development
+
+Resources:
+
+* Pyramid: https://docs.pylonsproject.org/projects/pyramid/en/2.1-branch/
+* Bootstrap: https://getbootstrap.com
+* HTMX: https://htmx.org
+* Chameleon: https://chameleon.readthedocs.io/en/latest/
+* SQLAlchemy: https://docs.sqlalchemy.org/en/20/errors.html#error-gkpj
+* Alembic: https://alembic.sqlalchemy.org/en/latest/
+* Devenv:  https://devenv.sh

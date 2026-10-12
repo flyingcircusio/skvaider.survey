@@ -1,0 +1,22 @@
+<div metal:use-macro="load: layout.pt">
+    <div metal:fill-slot="content">
+
+        <h1><span class="font-semi-bold">Pyramid</span> <span class="smaller">Starter project</span></h1>
+
+        <div class="col-lg-8 px-0">
+            <p class="fs-lg">
+                Welcome to <span class="font-normal">${project}</span>, a&nbsp;Pyramid
+                application generated&nbsp;by<br><span class="font-normal">Cookiecutter</span>.</p>
+        </div>
+
+        <button class="btn" hx-post="/clicked" hx-swap="outerHTML">
+            Click Me
+        </button>
+
+        <button class="btn"
+                _="on click hide me">
+            Now you see me ...
+        </button>
+
+    </div>
+</div>

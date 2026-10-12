@@ -2,7 +2,7 @@
 name = "skvaider.survey"
 version = "0.1dev0"
 
-description = "Tools for AI model providers and AI application developers to validate and verify inference and model quality and performance"
+description = "Tools for AI model providers to survey model inference serving quality and performance from multiple client applications."
 license = "MIT"
 authors = [
     { name = "Flying Circus IO GmbH <mail@flyingcircus.io>", email = "mail@flyingcircus.io" },
@@ -10,15 +10,25 @@ authors = [
 
 requires-python = "==3.14.*"
 dependencies = [
-    "pydantic>=2.13.5",
     # keep-sorted start
-    # keep-sorted end
+    "alembic",
+    "pydantic>=2.13.5",
     "pyramid>=2.1",
+    "pyramid_chameleon",
+    "pyramid_debugtoolbar",
+    "pyramid_retry",
+    "pyramid_tm",
+    "sqlalchemy",
+    "transaction",
+    "waitress",
+    "zope.sqlalchemy",
+    # keep-sorted end
 ]
 
 [dependency-groups]
 dev = [
     # keep-sorted start
+    "WebTest",
     "pytest",
     "pytest-asyncio",
     "pytest-cache",
@@ -44,8 +54,7 @@ exclude-newer = "7 days"
 
 [project.scripts]
 # keep-sorted start
-arena = "skvaider.survey.arena:main"
-runner = "skvaider.survey.runner:main"
+skvaider-survey = "skvaider.survey.cli:main"
 # keep-sorted end
 
 [tool.ruff]
@@ -65,5 +74,5 @@ categories = ""
 typeCheckingMode = "standard"
 venvPath = "."
 pythonVersion = "3.14"
-venv = ".venv"
+venv = ".devenv/state/venv"
 include = ["src"]
