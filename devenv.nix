@@ -17,7 +17,7 @@
   languages.python.uv.enable = true;
 
   # https://devenv.sh/processes/
-  # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
+  processes.dev.exec = "${lib.getExe pkgs.watchexec} --restart -- uv run skvaider-survey web";
 
   # https://devenv.sh/services/
   # services.postgres.enable = true;

@@ -154,6 +154,10 @@ Our current, existing inference serving platform `skvaider` will need to grow tw
 
 # Development
 
+Run development server:
+
+  $ devenv up
+
 Resources:
 
 * Pyramid: https://docs.pylonsproject.org/projects/pyramid/en/2.1-branch/

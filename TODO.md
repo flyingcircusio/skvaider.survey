@@ -17,7 +17,7 @@
 * [ ] extract aramaki server code from directory
 
 * [x] github repo
-* [ ] branch protection
+* [x] branch protection
 * [ ] github tickets
 
 # Prep meeting
